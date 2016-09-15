@@ -46,3 +46,25 @@ WHERE course_no >= 100
 AND course_no < 200
 AND location LIKE 'L214' OR location LIKE 'L509'
 Order By course_no, location ASC;
+
+/* #8 - List the course number and section id for classes with a capacity of 12 or 15 (use the IN clause). Order the list by course number and section id. */
+SELECT course_no, section_id, capacity
+FROM section
+WHERE capacity IN (12, 15)
+Order By course_no, section_id ASC;
+
+/* #9 -  List the student id and grade for all of the midterm exam scores (MT) in section 141. Arrange the list by student id and grade. */
+SELECT student_id, numeric_grade
+FROM grade
+WHERE section_id LIKE '141'
+AND grade_type_code LIKE 'MT'
+Order By student_id, numeric_grade ASC;
+
+
+/* #10 - List the course number and description for all 300 level courses that have a prerequisite, arranged on course description. */
+SELECT course_no, description
+FROM course
+WHERE course_no >= 300
+AND course_no < 400
+AND prerequisite IS NOT NULL
+ORDER BY description ASC;
