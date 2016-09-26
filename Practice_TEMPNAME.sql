@@ -2,9 +2,13 @@
 IN, 
 I have created these practice problems myself
 */
-
+/*
 --This query gets the orders from WA that were from only 2 different employee numbers
 SELECT *
 FROM ORDERTBL
 WHERE OrdState = 'WA'
 AND Empno IN('E9345771', 'E8544399');
+*/
+
+SELECT ProdNo, ProdName, ProdMFG, To_Char(ProdNextShipDate, 'MM DD, YYYY - HH24:MI:SS')
+FROM Product;
