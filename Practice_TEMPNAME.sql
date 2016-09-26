@@ -10,5 +10,5 @@ WHERE OrdState = 'WA'
 AND Empno IN('E9345771', 'E8544399');
 */
 
-SELECT ProdNo, ProdName, ProdMFG, To_Char(ProdNextShipDate, 'MM DD, YYYY - HH24:MI:SS')
+SELECT ProdNo, ProdName, ProdMFG, To_Char(ProdNextShipDate, 'MM DD, YYYY - HH24:MI:SS Q DDD') AS "DATE"
 FROM Product;
