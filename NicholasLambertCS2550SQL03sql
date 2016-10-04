@@ -14,7 +14,6 @@ WHERE Location LIKE 'L509'
 ORDER BY Start_Date_Time ASC;
 
 /* #3 - List the course number, section ID, start date, instructor ID and capacity for all courses with a start date in July 2007. Arrange the list by start date and course number. */
-/*INCOMPLETE*/
 SELECT Course_No, Section_ID, Start_Date_Time, Capacity
 FROM SECTION
 WHERE Start_Date_Time LIKE '%JUL-07'
@@ -24,4 +23,39 @@ ORDER BY Start_Date_Time, Course_No;
 SELECT Student_ID, Section_ID, Final_Grade
 From Enrollment
 WHERE Enroll_Date LIKE '%JAN-07'
-AND Enroll_Date IS NOT NULL;
+AND Final_Grade IS NOT NULL;
+
+/* $5 - Create a query using the ORacle Dual Table that returns the date of the end of the semester for courses that begin on January 11, 2016. The semester is 109 days long. */
+/*INCOMPLETE*/
+SELECT To_Char(To_Date('11-January-2016', 'DD-Month-YYYY') + 109) AS "Semester_End_Date"
+FROM DUAL;
+
+/* #6 - Provide a list of course numbers and locations for sections being taught in the even numbered rooms located in building L */
+/*INCOMPLETE*/
+SELECT Course_No, Location
+FROM Section
+WHERE MOD(SUBSTR(Location, 2, 4), 2) = 0
+AND Location LIKE 'L%';
+
+/* #7 - Provide a list of students in xip code 11368 that registered 3 or more days after their student record was created */
+SELECT Last_Name, First_Name
+FROM Student
+WHERE Zip Like '%11368'
+AND Registration_Date >= (Created_Date + 3);
+
+/* #8 - Create a list of student names along with the number of years since they enrolled (round to 2 decimal places) for those students from area code 212. Sort the list on the number of years from highest to lowest. */
+SELECT First_Name, Last_Name, ROUND((SYSDATE - Registration_Date) / 365, 2) AS Years
+FROM STUDENT
+WHERE Phone LIKE '212%'
+ORDER BY Years DESC;
+
+/* # 9 - Create a list of starting times for all course sections. Eliminate Duplicates */
+SELECT DISTINCT To_Char(Start_Date_Time, 'HH24:MI') AS "START"
+FROM Section
+ORDER BY "START";
+
+/* #10 - List the student id, section id and time enrolled for all studnets who enrolled at 10:19am. Arrange the list by student id */
+SELECT Student_ID, Section_ID, To_Char(Enroll_Date, 'HH:MIAM') "EnrollTime"
+FROM Enrollment
+WHERE To_Char(Enroll_Date, 'HH:MIAM') LIKE '10:19AM'
+ORDER BY Student_ID;
