@@ -129,3 +129,55 @@ Order By "Number of Years";
 --Getting rid of duplicate stuff
 SELECT To_Char(OrdDate, 'DD Mon YYYY HH:MI')
 FROM OrderTBL;
+
+--Using HAVING
+--HAVING has to be with a GROUP BY
+--GROUP BY does not need a HAVING
+Select COUNT(*), OrdDate
+FROM Ordertbl
+GROUP BY Orddate
+HAVING COUNT(*) > 1;
+
+-- 1. Find the customer Balance for each customer 
+SELECT To_Char(AVG(CustBal), '9999.99') AS "Average Customer Balance"
+FROM Customer;
+
+-- 2. Show the name of the customer with the highest balance and what the balance is
+SELECT To_Char(MAX(CustBal), '9999.99') AS "Highst Customer balance"
+FROM Customer;
+
+-- 3. Show the difference between the highest balance and the average balance
+SELECT  MAX(CustBal) - AVG(CustBal) AS "Dif Between High and Avg"
+FROM Customer;
+
+-- .4 Show the easliest order date
+SELECT MIN(OrdDate)
+FROM OrderTbl;
+
+-- .5 Show how many customers eash ctate has
+SELECT COUNT(*), CustState
+FROM Customer
+GROUP BY CustState
+ORDER BY COUNT(*);
+
+--.6 Show the employees 
+SELECT COUNT(*), EmpCommRate
+FROM Employee
+WHERE EmpCommRate IS NOT NULL
+GROUP BY EmpCommRate;
+
+-- 7. Show the total price of the products for each manufacturer
+SELECT SUM(ProdPrice), ProdMFG
+FROM Product
+GROUP BY ;
+
+-- 8. List the number of orders being sent to Washington
+SELECT COUNT(*), OrdState
+FROM Ordertbl
+GROUP BY OrdState;
+
+-- 9. Show the number of orders for those customers who have ordered more than once
+SELECT COUNT (*), CUstNo
+FROM Ordertbl
+GROUP BY CustNo
+HAVING COUNT(*) > 1;
