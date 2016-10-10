@@ -181,3 +181,30 @@ SELECT COUNT (*), CUstNo
 FROM Ordertbl
 GROUP BY CustNo
 HAVING COUNT(*) > 1;
+
+/*
+STARTING TO WORK WITH MULTIPLE TABLES
+*/
+--Select from two tables, give an alias to the tables
+SELECT first_name, last_name, final_grade, enroll_date
+FROM student s, enrollment e
+WHERE s.student_id = e.student_id;
+
+--Join using this field
+--the USING value has to be the same between the two tables
+SELECT First_Name, Last_Name, Enroll_Date
+FROM student s JOIN enrollment e
+USING (student_id);
+
+--Using an ON statement
+SELECT First_Name, Last_Name, Enroll_Date
+FROM student s JOIN enrollment e
+ON s.student_id = e.student_id;
+
+--JOINS
+SELECT First_Name, Last_Name, Enroll_Date, e.student_id, sec.section_id
+FROM student s JOIN enrollment e
+ON s.student_id = e.student_id
+JOIN section sec
+ON e.section_id = sec.section_id;
+

@@ -1,0 +1,29 @@
+/*Nicholas Lambert*/
+
+/* #1 - Create a query that return the average costs for all courses. (Round to two places) */
+SELECT To_Char(AVG(Cost), '9999.99')
+FROM Course;
+
+/* #2 - Create a query that returns the total number of students that registered during February 2007. Alias the column as "February_Registrations" */
+SELECT COUNT(Registration_Date) AS "February_Registrations"
+FROM Student
+WHERE Registration_Date LIKE '%FEB%';
+
+/* #3 - Create a query that returns the average, highest and lowest final exam scores for Section 417 */
+--THIS NEEDS TO BE FIXED. IT IS GETTING THE WRONG VALUES ACCORDING TO THE ANSWER KEY
+SELECT To_Char(AVG(Numeric_Grade), '99.99') AS "AVERAGE", MAX(Numeric_Grade) AS "HIGHEST", MIN(Numeric_Grade) AS "Lowest"
+FROM Grade
+WHERE Section_id LIKE '147';
+
+/* #4 - List the city, state and number of zipcodes for all cities with more than two zipcodes. Arrange by state and city. */
+SELECT City, State, COUNT(Zip)
+FROM Zipcode
+GROUP BY City, State
+HAVING COUNT(Zip) > 2;
+
+/* #5 - provide a list of sections and the number of students enrolled in each section for students who enrolled on 2/21/2007. Sort from highest to lowest on the number of students enrolled */
+SELECT Section_ID, COUNT(Student_ID) AS "ENROLLED"
+FROM Enrollment
+WHERE Enroll_Date LIKE '21-FEB-07'
+GROUP BY Section_ID
+ORDER BY Count(Student_ID) DESC;
