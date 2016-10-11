@@ -10,7 +10,6 @@ FROM Student
 WHERE Registration_Date LIKE '%FEB%';
 
 /* #3 - Create a query that returns the average, highest and lowest final exam scores for Section 417 */
---THIS NEEDS TO BE FIXED. IT IS GETTING THE WRONG VALUES ACCORDING TO THE ANSWER KEY
 SELECT To_Char(AVG(Numeric_Grade), '99.99') AS "AVERAGE", MAX(Numeric_Grade) AS "HIGHEST", MIN(Numeric_Grade) AS "Lowest"
 FROM Grade
 WHERE Section_id LIKE '147';
@@ -27,3 +26,39 @@ FROM Enrollment
 WHERE Enroll_Date LIKE '21-FEB-07'
 GROUP BY Section_ID
 ORDER BY Count(Student_ID) DESC;
+
+/* #6 - Create a query listing the student id, section id and average grade for all students in section 86. Sort your list on the student id and adisplay all of the average grades with 4 decimal places */
+SELECT Student_ID, Section_ID, To_Char(AVG(Numeric_Grade), '99.9999') AS "AverageGrade"
+FROM Grade
+WHERE Section_ID LIKE '86'
+GROUP BY Student_ID, Section_ID
+ORDER BY Student_ID;
+
+/* #7 - Create a query to determine the number of sections in which student id 250 is enrolled. Your output should contain the student id and the number of sections enrolled */
+SELECT Student_ID, COUNT(Section_ID)
+FROM Enrollment
+WHERE Student_ID LIKE '250'
+GROUP BY Student_ID;
+
+/* #8 - List the section ID and lowest quiz score for all sections where the low score is greater than a B (greater than 80). Arrange by section id */
+SELECT Section_ID, MIN(Numeric_Grade)
+FROM Grade
+WHERE Grade_Type_CODE LIKE 'QZ'
+GROUP BY Section_ID
+HAVING MIN(Numeric_Grade) > 80
+ORDER BY Section_ID;
+
+/* #9 - List the names of employers having more than 5 student employees. Your output should contain the employer name and the number of student employees. Arrange the output on the number of employees from lowest to highest */
+SELECT Employer, COUNT(Employer) AS "Employees"
+FROM STUDENT
+GROUP BY Employer
+HAVING COUNT(Employer) > 5
+ORDER BY COUNT(EMPLOYER);
+
+/* #10 - List the section id, number of participation grades and lowest participation grade for all sections with more than 15 participation grades. Arrange by section id */
+SELECT Section_id, COUNT(Grade_Type_Code) AS "Participation Grades", MIN(Numeric_Grade) AS "Lowest Grade"
+FROM GRADE
+WHERE Grade_Type_Code LIKE 'PA'
+GROUP BY Section_ID
+HAVING COUNT(Grade_Type_Code) > 15
+ORDER BY Section_ID;
