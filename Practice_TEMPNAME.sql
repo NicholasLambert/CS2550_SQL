@@ -208,3 +208,65 @@ ON s.student_id = e.student_id
 JOIN section sec
 ON e.section_id = sec.section_id;
 
+--Use an alias and grab information from multiple tables
+SELECT EmpFirstName, EmpLastName, CustFirstName, CustLastName
+FROM employee e, ordertbl o, customer c
+WHERE e.empno = o.empno
+AND o.custno = c.custno;
+
+--Grabs information from the same table using a join. Let's us print the employee and the supervisor together
+SELECT empno, empfirstname, supervisorfirstname, supervisorlastname
+FROM employee empfirstname, employee sup
+WHERE emp.supno = sup.empno;
+
+/*
+EXAMPLE QUERIES FOR JOIN
+*/
+-- #1 - List the ifrst and last names for employess that have customers in seattle
+SELECT empfirstname, emplastname, empphone
+FROM employee emp JOIN orderTbl order
+ON emp.empno = ord.empno
+JOIN customer cust
+ON ord.custno = cust.custno
+WHERE custcity = 'Seattle';
+
+-- #2 - List the orderno, orderdate, custno, custstate and the shipping state in which the customer state differs from the shipping state
+SELECT o.ordno, o.orddate, o.custno, c.custstate, o.ordstate
+FROM ordertbl o JOIN customer c
+ON c.custno = o.custnoWHERE c.custstate != o.ordstate;
+
+-- #3 for coloardo customers, compute the number of orders placed during janurary 2007. The result should include the customer number, last name and number of orders placed
+SELECT c.custno, custlastname, ordno, orddate
+FROM customer c JOIN ordertbl o
+ON c.custno = o.custno
+WHERE to_Char(Orddate, 'Mon YYYY') = 'Jan 2007'
+AND custstate = 'CO'
+GROUP BY c.custno, custlastname;
+
+-- #4 - List the product manufacturer, product name and number of times that the product has appeared on an order for products that have appeared on an order at least 5 times
+SELECT ProdMFG, ProdName, COUNT(*)
+FROM Product p JOIN ordline ol
+ON p.prodno = ol.prodno
+GROUP BY prodmfg, prodname
+HAVING COUNT(*) >= 5;
+
+-- #5 - List each customer city and state and the number of customers in that city and state. Order the list such that the city with the highest number of customers is at the top of the list
+--Oops, wasn't paying attention on this one
+
+-- #6 - For each employee with a commission rate greater than or equal to 0.05, compute the number of orders taken in January 2007. The result should include the employee number, employee last name and number of orders taken
+SELECT e.empno, e.emplastname, o.ordno, empcommrate, orddate
+FROM employee e JOIN ordertbl o
+ON e.empno = o.empno
+WHERE To_Char(orddate, 'MM YY') = '01 07'
+AND empcommrate >= 0.05
+GROUP BY e.empno, e.empLastName
+
+-- #8 - List each customer name and total number of items ordered for customers with zereo balances
+SELECT custfirstname, custlastname, qty
+FROM customer c JOIN ordertbl o
+ON c.custno = o.custno
+JOIN ordline ol
+ON o.ordno = ol.ordno
+WHERE custbal = 0.00
+GROUP BY custlastname, custfirstname
+ORDER BY custfirst name, custlastname;
