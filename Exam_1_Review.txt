@@ -1,0 +1,24 @@
+/*--------------------------------------------
+Exam 1 Review
+
+This is a document that goes through every question
+on the exam review and demonstrates the concept of each
+------------------------------------------------*/
+
+Chapter 1
+--------------------
+1. Know what a table, row and column are used for in databases
+	Table: 
+	Row: 
+	Column: 
+
+2. Know what a primary key and a foreign key is
+	Primary Key: 
+	Foreign Key: 
+
+3. Know which SQL statement are used for data manipulation, data definition, data control and transaction control
+	Data Manipulation: 
+	Data definition: 
+	Data Control: 
+	Transaction Control: 
+

@@ -270,3 +270,54 @@ ON o.ordno = ol.ordno
 WHERE custbal = 0.00
 GROUP BY custlastname, custfirstname
 ORDER BY custfirst name, custlastname;
+
+/* -------------------------------------------------------
+Here's some new stuff, woot woot...
+----------------------------------------------------------*/
+SELECT Cost, Cost * 1.1, Cost + 100, Cost - 100, Cost / 2
+FROM Course;
+
+SELECT Course_No, NVL(To_Char(Prerequisite), 'NA')
+FROM Course;
+
+--SUBQUERY TIME (aka death of me)
+SELECT Description, Course_No
+FROM Course
+WHERE Cost = (SELECT MAX(Cost) FROM Course);
+--JK, that wasn't too bad
+
+SELECT SUM(Capacity) * Cost AS "Potential Revnue"
+FROM Enrollment e JOIN Section s
+ON e.Section_ID = s. Section_ID
+WHERE Course_No = 20;
+
+--Let's just go ahead and do a bunch of weird stuff. This practice sheet has
+--been way too easy
+SELECT Num_enrolled, Num_enrolled * Cost AS "Actual Revenue", Total_Capacity, Total_Capacity * Cost AS "Potential Capacity"
+FROM
+(SELECT COUNT(*) AS Num_Enrolled, course_no
+FROM Enrollment e JOIN section s
+ON e.Section_ID = s.Section_ID
+WHERE Course_No = 20
+GROUP BY course_no) Num
+JOIN
+(SELECT SUM(Capacity) AS Total_Capacity, Course_No
+FROM Enrollment e JOIN Section s
+ON e.Section_ID = s.Section_ID
+WHERE Course_No = 20
+GROUP BY course_no) Cap
+ON Num.course_no = cap.course_no
+JOIN Course c
+ON c.Course_No = num.Course_No;
+
+--Get first 5 values
+SELECT First_Name, Last_Name
+FROM Student
+WHERE ROWNUM <= 5;
+
+SELECT city, state, zip,
+	(SELECT COUNT(*)
+	FROM student s
+	WHERE s.zip = z.zip)
+FROM zipcode z
+WHERE state = 'CT';
