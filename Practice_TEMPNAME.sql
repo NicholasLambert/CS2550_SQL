@@ -321,3 +321,9 @@ SELECT city, state, zip,
 	WHERE s.zip = z.zip)
 FROM zipcode z
 WHERE state = 'CT';
+
+SELECT COUNT(*), sec.course_no
+FROM section sec JOIN enrollment e
+ON sec.section_id = e.section_id
+WHERE sec.course_no = 20
+GROUP BY sec.course_no;
