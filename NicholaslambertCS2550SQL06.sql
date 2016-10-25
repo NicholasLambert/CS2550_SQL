@@ -74,7 +74,6 @@ WHERE To_Char(s.start_date_time, 'HH:MI') = '10:30'
 ORDER BY c.course_no;
 
 /* #7 - List the student_id and last_name of students who received a below average grade on the third quiz in section 120. */
---Well, that's one way of doing it
 SELECT student_id, last_name
 FROM (
   SELECT s.student_id, s.last_name, g.numeric_grade
@@ -90,16 +89,12 @@ FROM (
 WHERE ROWNUM = 1;
 
 /* #8 - Provide an alphabetic list containing the full names and phone numbers of students who have taken both the Systems Analysis and the Project Management courses.  You must use the title of the course in your query, not the course number. */
--- TODO
-SELECT c.Description, st.first_name, st.last_name, st.phone, st.student_id
-FROM course c JOIN section s
-ON c.course_no = s.course_no
-JOIN enrollment e
-ON s.section_id = e.section_id
-JOIN student st
-ON e.student_id = st.student_id
-WHERE description LIKE 'Systems Analysis'
-OR description LIKE 'Project Management';
+SELECT FIRST_NAME, LAST_NAME, PHONE
+FROM(SELECT e.STUDENT_ID, stu.FIRST_NAME, stu.LAST_NAME, stu.PHONE,COUNT(*) as "count"
+FROM ENROLLMENT e JOIN SECTION s ON e.SECTION_ID = s.SECTION_ID JOIN COURSE c ON s.COURSE_NO = c.COURSE_NO JOIN STUDENT stu ON stu.STUDENT_ID = e.STUDENT_ID
+WHERE c.DESCRIPTION LIKE 'S%' OR c.DESCRIPTION LIKE 'Pro%'
+GROUP BY e.STUDENT_ID, stu.FIRST_NAME, stu.LAST_NAME, stu.PHONE)
+WHERE "count" = 2;
 
 /* #9 - List the instructor name and course description of the Java courses that have been taught by the Instructor that has taught the most Java courses.
 Sort on instructor name and course description.******/
