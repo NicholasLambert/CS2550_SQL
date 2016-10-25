@@ -269,7 +269,7 @@ JOIN ordline ol
 ON o.ordno = ol.ordno
 WHERE custbal = 0.00
 GROUP BY custlastname, custfirstname
-ORDER BY custfirst name, custlastname;
+ORDER BY custfirstname name, custlastname;
 
 /* -------------------------------------------------------
 Here's some new stuff, woot woot...
