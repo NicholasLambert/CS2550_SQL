@@ -327,3 +327,11 @@ FROM section sec JOIN enrollment e
 ON sec.section_id = e.section_id
 WHERE sec.course_no = 20
 GROUP BY sec.course_no;
+
+SELECT s.student_id, COUNT(*)
+FROM student s JOIN enrollment e
+ON s.student_id = e.student_id
+GROUP BY s.student_id
+ORDER BY s.student_id;
+
+/* Some new stuff, let's hope it doesn't destroy me */

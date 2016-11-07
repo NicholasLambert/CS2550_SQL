@@ -8,9 +8,9 @@ on the exam review and demonstrates the concept of each
 Chapter 1
 --------------------
 1. Know what a table, row and column are used for in databases
-	Table: 
-	Row: 
-	Column: 
+	Table: Collection of rows and columns
+	Row: horizontal set of information
+	Column: vertical set of information
 
 2. Know what a primary key and a foreign key is
 	Primary Key: 
@@ -22,4 +22,86 @@ Chapter 1
 	Data Control: 
 	Transaction Control: 
 
-4. 
+4. Know what the objective of data normalization is
+
+
+5. Know what first, second and third normal forms are
+
+
+6. Know the different types of table relationships
+
+
+7. Know what cardinality and optionality are
+
+
+8. Know the essential phases of database development are
+
+
+Chapter 2
+--------------------
+1. Know the types of commonly used data types
+
+
+2. Know how to write a SQL SELECT statement
+	The select statement calls for the columns that you want from a specified table. The columns must exist in the table or be created from information gathered from the table.
+	
+	EX: SELECT first_name, last_name
+		FROM student;
+
+	The SELECT statement here is used to grab the data from two columns inside of the Student table.
+
+3. Know the purpose of the DISTINCT and UNIQUE statements
+	Both of these statements will grab the same data and act in the same way. The only difference is that DISTINCT is a standard SQL statement and UNIQUE is used only inside of Oracle SQL statements
+
+
+Chapter 3
+---------------------
+1. Know the different SQL Comparison Operators
+	=	Checks if the values of two operands are equal or not, if yes then condition becomes true.	
+		(a = b) is not true.
+	!=	Checks if the values of two operands are equal or not, if values are not equal then condition becomes true.	
+		(a != b) is true.
+	<>	Checks if the values of two operands are equal or not, if values are not equal then condition becomes true.	
+		(a <> b) is true.
+	>	Checks if the value of left operand is greater than the value of right operand, if yes then condition becomes true.	
+		(a > b) is not true.
+	<	Checks if the value of left operand is less than the value of right operand, if yes then condition becomes true.	
+		(a < b) is true.
+	>=	Checks if the value of left operand is greater than or equal to the value of right operand, if yes then condition becomes true.		
+		(a >= b) is not true.
+	<=	Checks if the value of left operand is less than or equal to the value of right operand, if yes then condition becomes true
+		(a <= b) is true.
+	!<	Checks if the value of left operand is not less than the value of right operand, if yes then condition becomes true.		
+		(a !< b) is false.
+	!>	Checks if the value of left operand is not greater than the value of right operand, if yes then condition becomes true.		
+		(a !> b) is true.
+2. Know how to write an SQL statement checking for equality
+	When checking for equality, you will want to use any of the comparison operators that have an = sign
+	
+	EX: SELECT first_name, last_name
+		FROM student
+		WHERE last_name = 'Enison';
+
+	This statement will grab students with a last name of 'Enison'. It is case sensitive and will only grab data that is identical.
+
+3. Know how to write an SQL statement using the greater than and less than Operators
+	The greater than and less than operators are commonly used with COUNT, dates and prices.
+	
+	EX: SELECT To_Char(AVG(CustBal), '999.99') AS Customer_Balance_Per_State, CustCity, CustState
+		FROM Customer
+		GROUP BY CustCity, CustState
+		HAVING AVG(CustBal) >= 500;
+
+	This example grabs all of the balances that are greater than or equal to 500 and prints them to screen
+
+4. Know how to use the BETWEEN operator
+	The BETWEEN operator is similar to using 0 < x < 1. It will find all values that are between two set numbers, including the range numbers themselves.
+
+	EX: SELECT *
+		FROM Product
+		WHERE ProdPrice BETWEEN 10 AND 100;
+
+	This example will print all of the columns FROM product where 10 <= ProdPrice <= 100
+
+5. Know how to use the IN operator
+	
