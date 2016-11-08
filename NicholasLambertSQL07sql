@@ -85,3 +85,18 @@ FROM (
   ) sq JOIN course c
 ON sq.course_no = c.course_no
 WHERE rownum = 1;
+
+SELECT DISTINCT first_name, last_name
+FROM (
+  SELECT DISTINCT e.student_id
+  FROM (
+    SELECT To_Char(start_date_time, 'HH24:MI'), course_no
+    FROM section
+    WHERE To_Char(start_date_time, 'HH24:MI') LIKE '10:30'
+    ) sq JOIN section sec
+  ON sq.course_no = sec.course_no
+  JOIN enrollment e
+  ON sec.section_id = e.section_id
+) sq JOIN student s
+ON sq.student_id = s.student_id
+ORDER BY last_name;
