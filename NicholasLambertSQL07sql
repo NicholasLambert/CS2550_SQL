@@ -100,3 +100,33 @@ FROM (
 ) sq JOIN student s
 ON sq.student_id = s.student_id
 ORDER BY last_name;
+
+SELECT s.first_name, s.last_name
+FROM grade g JOIN enrollment e
+ON g.student_id = e.student_id
+AND g.section_id = e.section_id
+JOIN student s
+ON e.student_id = s.student_id
+WHERE g.numeric_Grade < (
+  SELECT AVG(numeric_grade)
+  FROM grade
+  WHERE section_id = 87
+  AND grade_type_code LIKE 'FI')
+AND g.section_id = 87
+AND g.grade_type_code = 'FI'
+ORDER BY s.last_name;
+
+SELECT first_name, last_name, phone
+FROM student s JOIN enrollment e
+ON s.student_id = e.student_id
+JOIN section sec
+ON sec.section_id = e.section_id
+JOIN (
+  SELECT DISTINCT description, course_no
+  FROM course
+  WHERE description LIKE '%Database%'
+  OR description LIKE '%SQL%'
+  OR description LIKE '%DB%'
+) sq
+ON sec.course_no = sq.course_no
+ORDER BY last_name, first_name;
