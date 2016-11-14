@@ -1,0 +1,44 @@
+SELECT first_name, last_name
+FROM student s JOIN (
+  SELECT DISTINCT student_id, enroll_date
+  FROM enrollment e JOIN (
+    SELECT MIN(enroll_date) MinDate
+    FROM enrollment
+    ) sq
+  ON e.enroll_date = sq.MinDate
+) sq
+ON s.student_id = sq.student_id;
+
+SELECT c.description, s.section_no, c.cost, s.capacity
+FROM Section s JOIN course c
+ON s.course_no = c.course_no
+WHERE capacity <= (
+  SELECT AVG(capacity)
+  FROM Section
+  )
+AND c.cost = (
+  SELECT MIN(cost)
+  FROM course
+  );
+
+--Shit Don't Work Yo
+SELECT course_no, SUM(capacity) AS SumCap
+FROM section
+WHERE SumCap < (
+  SELECT AVG(AvCap)
+  FROM (
+    SELECT SUM(capacity) AvCap, course_no
+    FROM Section
+    GROUP BY course_no
+    )
+  )
+GROUP BY course_no;
+
+SELECT *
+FROM (
+  SELECT COUNT(section_id) AS Most_Classes, student_id
+  FROM enrollment
+  GROUP BY student_id
+  ORDER BY Most_Classes DESC
+  )
+WHERE RowNum >= 2;
