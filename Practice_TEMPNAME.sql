@@ -334,4 +334,15 @@ ON s.student_id = e.student_id
 GROUP BY s.student_id
 ORDER BY s.student_id;
 
-/* Some new stuff, let's hope it doesn't destroy me */
+/* Some new stuff, let's hope it doesn't destroy me 
+  Mainly consists of Outer Join Examples  */
+
+--This grabs courses that don't have sections and courses that do have sections
+SELECT c.course_no, sec.course_no, description, start_date_time
+FROM course c LEFT JOIN section sec
+ON c.course_no = sec.course_no
+ORDER BY c.course_no;
+
+SELECT i.instructor_id, s.student_id
+FROM instructor i FULL OUTER JOIN student s
+ON i.zip = s.zip;
