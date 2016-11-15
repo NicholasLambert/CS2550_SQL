@@ -21,24 +21,90 @@ AND c.cost = (
   FROM course
   );
 
---Shit Don't Work Yo
-SELECT course_no, SUM(capacity) AS SumCap
-FROM section
-WHERE SumCap < (
-  SELECT AVG(AvCap)
-  FROM (
-    SELECT SUM(capacity) AvCap, course_no
-    FROM Section
-    GROUP BY course_no
-    )
-  )
-GROUP BY course_no;
+SELECT course_no, cap AS Cap
+FROM (
+  SELECT c.course_no, SUM(capacity) as cap
+  FROM course c JOIN section s
+  ON c.course_no = s.course_no
+  GROUP BY c.course_no
+)
+WHERE Cap < (
+  SELECT AVG(capacity)
+  FROM section
+  );
 
 SELECT *
 FROM (
-  SELECT COUNT(section_id) AS Most_Classes, student_id
+  SELECT student_id, COUNT(section_id) AS Most_Classes
   FROM enrollment
   GROUP BY student_id
   ORDER BY Most_Classes DESC
   )
-WHERE RowNum >= 2;
+WHERE RowNum <= 2;
+
+SELECT sq.student_id, e.section_id
+FROM (
+  SELECT student_id
+  FROM student
+  WHERE zip LIKE '11365'
+  ) sq
+JOIN enrollment e
+ON sq.student_id = e.student_id;
+
+SELECT sq.course_no, sq.description, sec.instructor_id
+FROM (
+  SELECT course_no, description
+  FROM course
+  ) sq
+JOIN section sec
+ON sq.course_no = sec.course_no
+JOIN instructor i
+ON sec.instructor_id = i.instructor_id
+WHERE i.first_name LIKE 'Nina';
+
+SELECT s.first_name, s.last_name
+FROM (
+  SELECT student_id
+  FROM student
+  MINUS
+  SELECT student_id
+  FROM enrollment
+  ) sq
+JOIN student s
+ON sq.student_id = s.student_id;
+
+/*THIS QUESTION HAS A STUDENT THAT COMES UP TWICE. SHE RECEIVED A 70 IN TWO DIFFERENT COURSES. */
+SELECT DISTINCT stu.first_name, stu.last_name, c.description, sec.section_id
+FROM (
+  SELECT MIN(numeric_grade) AS nGrade
+  FROM grade
+  WHERE grade_type_code LIKE 'PA'
+  ) sq
+JOIN grade g
+ON sq.nGrade = g.numeric_grade
+JOIN enrollment e
+ON g.student_id = e.student_id
+JOIN student stu
+ON stu.student_id = e.student_id
+JOIN section sec
+ON e.section_id = sec.section_id
+JOIN course c
+ON sec.course_no = c.course_no
+WHERE g.grade_type_code LIKE 'PA';
+
+SELECT sq.enrolled, se.section_id, se.capacity
+FROM (
+  SELECT COUNT(student_id) AS ENROLLED, section_id
+  FROM enrollment
+  GROUP BY section_id
+  ) sq
+JOIN section se
+ON sq.section_id = se.section_id
+WHERE se.capacity <= sq.ENROLLED;
+
+SELECT course_no, description, cost
+FROM course
+WHERE cost = (
+  SELECT MIN(cost)
+  FROM course
+  );
