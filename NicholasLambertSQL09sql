@@ -1,0 +1,113 @@
+SELECT sq.student_id, s.last_name, s.first_name, s.employer
+FROM student s JOIN (
+  SELECT COUNT(enroll_date) AS Counting, student_id
+  FROM enrollment
+  GROUP BY student_id
+  ORDER BY Counting DESC
+  ) sq
+ON s.student_id = sq.student_id
+WHERE sq.counting = 4;
+
+SELECT s.zip, s.first_name, s.last_name, s.phone
+FROM (
+  SELECT student_id, instructor_id
+  FROM enrollment e JOIN section s
+  ON e.section_id = s.section_id
+  ) sq JOIN student s
+ON sq.student_id = s.student_id
+JOIN instructor i
+ON sq.instructor_id = i.instructor_id
+WHERE s.zip = i.zip;
+
+SELECT first_name, last_name, z.city, 'Student' AS ROLE
+FROM student s JOIN zipcode z
+ON s.zip = z.zip
+WHERE s.zip = 10025
+UNION
+SELECT first_name, last_name, z.city, 'Instructor' AS ROLE
+FROM instructor i JOIN zipcode z
+ON i.zip = z.zip
+WHERE i.zip = 10025
+ORDER BY role, last_name, first_name;
+
+SELECT sq1.location AS Location, sq1.Sections, sq2.Students
+FROM (
+  SELECT location, COUNT(section_id) AS Sections
+  FROM section
+  GROUP BY location
+) sq1 JOIN (
+  SELECT COUNT(e.student_id) AS STUDENTS, s.location
+  FROM enrollment e JOIN section s
+  ON e.section_id = s.section_id
+  GROUP BY s.location
+) sq2
+ON sq1.location = sq2.location
+ORDER BY sq1.location;
+
+SELECT GRADE_TYPE_CODE, NUMERIC_GRADE AS "GRADE"
+FROM GRADE
+WHERE STUDENT_ID = 112 AND SECTION_ID = 95
+UNION ALL
+SELECT (SELECT 'Average for student 112' AS "caption" FROM DUAL), AVG
+FROM
+(SELECT ROUND(AVG(NUMERIC_GRADE),2) AS "AVG"
+FROM GRADE
+WHERE STUDENT_ID = 112 AND SECTION_ID = 95)
+ORDER BY GRADE_TYPE_CODE DESC;
+
+SELECT t2.FIRST_NAME, t2.LAST_NAME, NVL(t1.SECTIONS, 0)
+FROM
+(SELECT COUNT(*) AS "SECTIONS", INSTRUCTOR_ID
+FROM SECTION
+GROUP BY INSTRUCTOR_ID) t1
+RIGHT OUTER JOIN
+(SELECT FIRST_NAME, LAST_NAME, INSTRUCTOR_ID
+FROM INSTRUCTOR) t2
+ON t1.INSTRUCTOR_ID = t2.INSTRUCTOR_ID
+ORDER BY t2.LAST_NAME;
+
+SELECT t1.COURSE_NO, cor.DESCRIPTION
+FROM
+(
+SELECT COURSE_NO, COUNT(*)
+FROM (
+SELECT DISTINCT COURSE_NO, grade_type_code
+FROM (
+SELECT DISTINCT sec.COURSE_NO, t1.SECTION_ID, t1.GRADE_TYPE_CODE
+FROM (
+SELECT SECTION_ID, GRADE_TYPE_CODE
+FROM GRADE
+) t1 JOIN SECTION sec 
+ON t1.SECTION_ID = sec.SEcTION_ID
+)
+)
+HAVING COUNT(*) = 6
+GROUP BY COURSE_NO
+) t1 JOIN COURSE cor
+ON t1.COURSE_NO = cor.COURSE_NO
+ORDER BY COURSE_NO;
+
+SELECT DISTINCT z.ZIP, z.CITY, CASE WHEN enr.STUDENT_ID IS NOT NULL THEN 1 ELSE 0 END AS "STUDENTS"
+FROM ENROLLMENT enr JOIN STUDENT stu 
+ON enr.STUDENT_ID = stu.STUDENT_ID
+RIGHT OUTER JOIN ZIPCODE z
+ON stu.ZIP = z.ZIP
+WHERE z.CITY = 'Stamford'
+ORDER BY z.ZIP;
+
+--Get This One
+SELECT cor.COURSE_NO, cor.DESCRIPTION, SUM(CASE WHEN enr.STUDENT_ID IS NOT NULL THEN 1 ELSE 0 END) AS "ENROLLMENTS"
+FROM ENROLLMENT enr RIGHT OUTER JOIN SECTION sec
+ON enr.SECTION_ID = sec.SECTION_ID
+JOIN COURSE cor 
+ON cor.COURSE_NO = sec.COURSE_NO
+WHERE cor.DESCRIPTION LIKE '%Programming%' OR cor.DESCRIPTION LIKE 'Programming%'
+GROUP BY cor.COURSE_NO, cor.DESCRIPTION
+ORDER BY "ENROLLMENTS" DESC;
+
+SELECT stu.FIRST_NAME, stu.LAST_NAME, SUM(CASE WHEN enr.STUDENT_ID IS NOT NULL THEN 1 ELSE 0 END)
+FROM ENROLLMENT enr RIGHT OUTER JOIN STUDENT stu
+ON enr.STUDENT_ID = stu.STUDENT_ID
+WHERE stu.PHONE like '617%'
+GROUP BY stu.FIRST_NAME, stu.LAST_NAME, enr.STUDENT_ID
+ORDER BY stu.LAST_NAME, stu.FIRST_NAME;

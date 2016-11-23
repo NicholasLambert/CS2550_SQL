@@ -346,3 +346,26 @@ ORDER BY c.course_no;
 SELECT i.instructor_id, s.student_id
 FROM instructor i FULL OUTER JOIN student s
 ON i.zip = s.zip;
+
+/*
+SOME WEIRD JUNK RIGHT HERE
+Allows for inserting, updating and deleting information in the table
+*/
+SELECT *
+FROM grade_type;
+
+INSERT INTO grade_type
+(grade_type_code, description, created_by, created_date, modified_by, modified_date)
+VALUES
+('LB', 'Lab Work', 'NICHOLAS LAMBERT', sysdate, 'NICHOLAS LAMBERT', sysdate);
+
+UPDATE grade_type
+SET grade_type_code = 'LW'
+WHERE description = 'Lab Work';
+
+DELETE FROM grade_type
+WHERE grade_type_code = 'LW';
+
+SAVEPOINT temp1;
+
+ROLLBACK;
