@@ -1,4 +1,4 @@
-/*This file is meant to show practice problems using such keywords as: AND, OR,
+as/*This file is meant to show practice problems using such keywords as: AND, OR,
 IN, 
 I have created these practice problems myself or have adapted them through classroom discussions.
 */
@@ -369,3 +369,34 @@ WHERE grade_type_code = 'LW';
 SAVEPOINT temp1;
 
 ROLLBACK;
+
+--Homework Query Assignment 10 #3
+INSERT INTO enrollment (student_id, section_id, final_grade, enroll_date, created_by, created_date, modified_by, modified_date)
+SELECT student_id, 48, NULL, to_date('24-AUG-2016', 'DD-MON-YYYY'), 'NLAMBERT', sysdate, 'NLAMBERT', sysdate
+FROM student
+WHERE student_id IN (SELECT student_id FROM student WHERE zip = '09012');
+
+
+--Creating a table
+CREATE TABLE vehicle
+(
+  Vin VARCHAR2(17) NOT NULL,
+  Make VARCHAR2(25) NOT NULL,
+  Model VARCHAR2(50) NOT NULL,
+  Year NUMBER(4) NOT NULL,
+  Mileage NUMBER(6),
+  Color VARCHAR2(15),
+  CONSTRAINT PK_Vehicle PRIMARY KEY (VIN)
+);
+
+DESC Vehicle;
+
+RENAME Vehicle TO Vehicles;
+
+DROP TABLE Vehicles;
+
+ALTER TABLE Vehicle
+ADD (Engine VARCHAR2(10));
+
+ALTER TABLE Vehicle
+DROP (Engine);
